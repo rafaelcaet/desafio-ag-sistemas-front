@@ -20,51 +20,51 @@ import {
 
 export const description = "A bar chart with a label"
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
-
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "label",
     color: "#13679F",
   },
 } satisfies ChartConfig
 
-export function ChartBarLabel() {
+type barChartData = {
+  label: string;
+  value: number;
+}
+
+export function ChartBarLabel(
+  title: string,
+  data: barChartData[]
+) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart - Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>últimos 6 meses</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart
             accessibilityLayer
-            data={chartData}
+            data={data}
             margin={{
               top: 20,
             }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="label"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              cursor={true}
+              content={<ChartTooltipContent />}
+              formatter={(value) =>  value.toLocaleString() + " " + title}
             />
-            <Bar dataKey="desktop" fill="#13679F" radius={8}>
+            <Bar dataKey="value" fill="#13679F" radius={8}>
               <LabelList
                 position="top"
                 offset={12}
