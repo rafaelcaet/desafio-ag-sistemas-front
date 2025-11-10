@@ -39,7 +39,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen items-center justify-center font-sans dark:bg-black">
-      <main className="flex h-fit rounded-lg w-full max-w-2xl flex-col items-center justify-center py-16 px-8 bg-white dark:bg-black">
+      <main className="flex h-fit rounded-lg w-full  shadow-md shadow-gray-300 max-w-2xl flex-col items-center justify-center py-16 px-8 bg-white dark:bg-black">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center space-y-2">
             <h1 className="text-4xl font-semibold leading-10 tracking-tight text-[#13679F] dark:text-zinc-50">
