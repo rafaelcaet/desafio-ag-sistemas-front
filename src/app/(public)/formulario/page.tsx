@@ -38,7 +38,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-[#04C1F3] to-[#13679F] font-sans dark:bg-black">
+    <div className="flex min-h-screen items-center justify-center font-sans dark:bg-black">
       <main className="flex h-fit rounded-lg w-full max-w-2xl flex-col items-center justify-center py-16 px-8 bg-white dark:bg-black">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center space-y-2">

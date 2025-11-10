@@ -22,7 +22,7 @@ const formSchema = z.object({
   motivo: z.string().min(1, "obrigatório"),
 });
 
-export default function Home() {
+export default function Cadastro() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,16 +38,13 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-[#04C1F3] to-[#13679F] font-sans dark:bg-black">
+    <div className="flex min-h-screen items-center justify-center font-sans dark:bg-black">
       <main className="flex h-fit rounded-lg w-full max-w-2xl flex-col items-center justify-center py-16 px-8 bg-white dark:bg-black">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center space-y-2">
             <h1 className="text-4xl font-semibold leading-10 tracking-tight text-[#13679F] dark:text-zinc-50">
-            Formulário de inscrição
+            Cadastro de usuário
             </h1>
-            <p className="text-md leading-8 text-[#13679f] dark:text-zinc-400">
-              Inscreva-se na nossa plataforma e fique por dentro das novidades.
-            </p>
           </div>
 
           <Form {...form}>
