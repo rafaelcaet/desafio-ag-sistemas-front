@@ -16,20 +16,34 @@ import {
 } from "@/components/ui/form";
 
 const formSchema = z.object({
-  nome: z.string().min(1, "obrigatório"),
-  email: z.string().email("Email inválido").min(1, "obrigatório"),
-  empresa: z.string().min(1, "obrigatório"),
-  motivo: z.string().min(1, "obrigatório"),
+  telefone: z.string().min(10, "Telefone inválido").regex(/^[\d\s\(\)\-\+]+$/, "Telefone inválido"),
+  cargo: z.string().min(2, "Cargo deve ter pelo menos 2 caracteres"),
+  departamento: z.string().min(2, "Departamento deve ter pelo menos 2 caracteres"),
+  experiencia: z.string().min(1, "Selecione sua experiência"),
+  setor: z.string().min(1, "Selecione o setor da empresa"),
+  tamanhoEmpresa: z.string().min(1, "Selecione o tamanho da empresa"),
+  linkedin: z.union([z.string().url("URL inválida"), z.literal("")]),
+  areasInteresse: z.string().min(10, "Descreva suas áreas de interesse (mínimo 10 caracteres)"),
+  disponibilidade: z.string().min(1, "Selecione sua disponibilidade"),
+  preferenciaContato: z.string().min(1, "Selecione sua preferência de contato"),
+  observacoes: z.string().optional(),
 });
 
 export default function Cadastro() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      nome: "",
-      email: "",
-      empresa: "",
-      motivo: "",
+      telefone: "",
+      cargo: "",
+      departamento: "",
+      experiencia: "",
+      setor: "",
+      tamanhoEmpresa: "",
+      linkedin: "",
+      areasInteresse: "",
+      disponibilidade: "",
+      preferenciaContato: "",
+      observacoes: "",
     },
   });
 
@@ -45,33 +59,23 @@ export default function Cadastro() {
             <h1 className="text-4xl font-semibold leading-10 tracking-tight text-[#13679F] dark:text-zinc-50">
             Cadastro de usuário
             </h1>
+            <p className="text-md leading-8 text-[#13679f] dark:text-zinc-400">
+              Complete seu perfil com informações mais detalhadas
+            </p>
           </div>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 control={form.control}
-                name="nome"
+                name="telefone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Nome*</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Seu nome" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Email*</FormLabel>
+                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Telefone*</FormLabel>
                     <FormControl>
                       <Input
-                        type="email"
-                        placeholder="seu@email.com"
+                        type="tel"
+                        placeholder="(00) 00000-0000"
                         {...field}
                       />
                     </FormControl>
@@ -79,29 +83,141 @@ export default function Cadastro() {
                   </FormItem>
                 )}
               />
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="cargo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Cargo*</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Seu cargo" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="departamento"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Departamento*</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Seu departamento" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
               <FormField
                 control={form.control}
-                name="empresa"
+                name="experiencia"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Empresa*</FormLabel>
+                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Anos de Experiência*</FormLabel>
                     <FormControl>
-                      <Input placeholder="Nome da empresa" {...field} />
+                      <select
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                        {...field}
+                      >
+                        <option value="">Selecione...</option>
+                        <option value="0-1">0 a 1 ano</option>
+                        <option value="2-3">2 a 3 anos</option>
+                        <option value="4-5">4 a 5 anos</option>
+                        <option value="6-10">6 a 10 anos</option>
+                        <option value="11+">Mais de 10 anos</option>
+                      </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
-                name="motivo"
+                name="setor"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Por que você quer participar?*</FormLabel>
+                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Setor da Empresa*</FormLabel>
+                    <FormControl>
+                      <select
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                        {...field}
+                      >
+                        <option value="">Selecione...</option>
+                        <option value="tecnologia">Tecnologia</option>
+                        <option value="financeiro">Financeiro</option>
+                        <option value="saude">Saúde</option>
+                        <option value="educacao">Educação</option>
+                        <option value="varejo">Varejo</option>
+                        <option value="industria">Indústria</option>
+                        <option value="servicos">Serviços</option>
+                        <option value="consultoria">Consultoria</option>
+                        <option value="outro">Outro</option>
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="tamanhoEmpresa"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Tamanho da Empresa*</FormLabel>
+                    <FormControl>
+                      <select
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                        {...field}
+                      >
+                        <option value="">Selecione...</option>
+                        <option value="1-10">1 a 10 funcionários</option>
+                        <option value="11-50">11 a 50 funcionários</option>
+                        <option value="51-200">51 a 200 funcionários</option>
+                        <option value="201-500">201 a 500 funcionários</option>
+                        <option value="501+">Mais de 500 funcionários</option>
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="linkedin"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">LinkedIn (opcional)</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="url"
+                        placeholder="https://linkedin.com/in/seu-perfil"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="areasInteresse"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Áreas de Interesse*</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Explique o motivo"
-                        className="min-h-[120px]"
+                        placeholder="Descreva as áreas que mais te interessam na plataforma..."
+                        className="min-h-[100px]"
                         {...field}
                       />
                     </FormControl>
@@ -109,12 +225,77 @@ export default function Cadastro() {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="disponibilidade"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Disponibilidade para Contato*</FormLabel>
+                    <FormControl>
+                      <select
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                        {...field}
+                      >
+                        <option value="">Selecione...</option>
+                        <option value="manha">Manhã (8h - 12h)</option>
+                        <option value="tarde">Tarde (13h - 17h)</option>
+                        <option value="noite">Noite (18h - 20h)</option>
+                        <option value="qualquer">Qualquer horário</option>
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="preferenciaContato"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Preferência de Contato*</FormLabel>
+                    <FormControl>
+                      <select
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                        {...field}
+                      >
+                        <option value="">Selecione...</option>
+                        <option value="email">Email</option>
+                        <option value="telefone">Telefone</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="linkedin">LinkedIn</option>
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="observacoes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium leading-8 text-[#13679f] dark:text-zinc-400">Observações Adicionais (opcional)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Alguma informação adicional que gostaria de compartilhar..."
+                        className="min-h-[100px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <Button
                 type="submit"
                 className="w-full bg-[#13679f] text-white hover:bg-[#13679f]/90 cursor-pointer"
                 disabled={form.formState.isSubmitting}
               >
-                {form.formState.isSubmitting ? "Enviando..." : "Enviar"}
+                {form.formState.isSubmitting ? "Enviando..." : "Completar Cadastro"}
               </Button>
             </form>
           </Form>
