@@ -39,7 +39,7 @@ export function ChartBarLabel(
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className="text-base font-semibold text-[#13679F]">{title}</CardTitle>
         <CardDescription>últimos 6 meses</CardDescription>
       </CardHeader>
       <CardContent>

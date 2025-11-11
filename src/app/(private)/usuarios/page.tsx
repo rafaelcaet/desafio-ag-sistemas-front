@@ -30,8 +30,9 @@ const leadsIndication = [
 
 export default function Usuarios() {
     return (
-        <div className="relative">
-              <Table className="w-[70%] mx-auto rounded-lg mt-8 text-[#13679F]">
+        <div className="relative w-[90%] mx-auto">
+            <h3 className="text-2xl font-bold text-[#13679F] py-4">Usuários</h3>
+              <Table className="w-full rounded-lg mt-8 text-[#13679F]">
                 <TableHeader className="border-gray-100 dark:border-gray-800 border-y">
                   <TableRow>
                     <TableCell className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">

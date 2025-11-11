@@ -18,7 +18,7 @@ export default function MetricChart({ title, value, subtitle }: MetricChartProps
         ) : null}
       </CardHeader>
       <CardContent>
-        <span className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
+        <span className="text-3xl font-bold dark:text-zinc-100 text-[#13679F]">
           {value}
         </span>
       </CardContent>
