@@ -7,21 +7,25 @@ import {
   } from "@/components/ui/sidebar"
 import Link from "next/link";
 import { ChartPieIcon, HomeIcon, ShieldIcon, Ticket, UsersIcon } from "lucide-react";
+import Image from "next/image";
 
 const sidebarItems = [
   {
     label: "Home",
     icon: <HomeIcon size={24}/>,
+    subItems: [],
     href: "/",
   },
   {
     label: "Auditoria",
     icon: <ShieldIcon size={24}/>,
+    subItems: [],
     href: "/auditoria",
   },
   {
     label: "Usuários",
     icon: <UsersIcon size={24}/>,
+    subItems: [],
     href: "/usuarios",
   },
   {
@@ -29,14 +33,14 @@ const sidebarItems = [
     icon: <ChartPieIcon size={24} />,
     href: "/dashboard",
   },
-  {
-    icon: <Ticket size={24} />,
-    label: "Indicações a pagar",
-    subItems: [
-      { label: "Indicadores a pagar", href: "/payment" },
-      { label: "Indicações Agrupadas", href: "/payment/group" },
-    ],
-  },
+  // {
+  //   icon: <Ticket size={24} />,
+  //   label: "Indicações a pagar",
+  //   subItems: [
+  //     { label: "Indicadores a pagar", href: "/payment" },
+  //     { label: "Indicações Agrupadas", href: "/payment/group" },
+  //   ],
+  // },
 ];
 
 const SidebarItem = ({ label, icon, href }: { label: string, icon: React.ReactNode, href: string }) => {
@@ -55,12 +59,20 @@ const SidebarItem = ({ label, icon, href }: { label: string, icon: React.ReactNo
 export function AppSidebar() {
   return (
     <Sidebar className="border" variant="sidebar" collapsible="icon">
+      <SidebarHeader className="bg-slate-100" >
+        <Image
+          src="/logo.png"
+          alt="Logo"
+          width={200}
+          height={200}
+        />
+      </SidebarHeader>
       <SidebarContent className="bg-slate-100">
         <SidebarGroup>
           {sidebarItems.map((item) =>
             item.href ? (
               <SidebarItem key={item.href} {...item} />
-            ) : item.subItems ? (
+            ) : item?.subItems ? (
               <div key={item.label}>
                 <div className="flex items-center text-[#13679F] justify-start
                     rounded-md py-2 px-1 gap-6">
@@ -68,7 +80,7 @@ export function AppSidebar() {
                   <span className="text-sm font-medium">{item.label}</span>
                 </div>
                 <div className="pl-4">
-                  {item.subItems.map((subItem) => (
+                  {item.subItems.map((subItem:any) => (
                     <SidebarItem key={subItem.href} label={subItem.label} icon={null} href={subItem.href} />
                   ))}
                 </div>
