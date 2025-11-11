@@ -15,6 +15,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+const APPROVED_USERS_STORAGE_KEY = "approvedUsers";
+
 const formSchema = z.object({
   nome: z.string().min(1, "obrigatório"),
   email: z.string().email("Email inválido").min(1, "obrigatório"),
@@ -34,7 +36,32 @@ export default function Home() {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    try {
+      const existingRaw = window.localStorage.getItem(
+        APPROVED_USERS_STORAGE_KEY,
+      );
+      const existing =
+        existingRaw !== null ? JSON.parse(existingRaw) : [];
+
+      const submission = {
+        ...values,
+        submittedAt: new Date().toISOString(),
+      };
+
+      window.localStorage.setItem(
+        APPROVED_USERS_STORAGE_KEY,
+        JSON.stringify([...existing, submission]),
+      );
+
+      window.dispatchEvent(new Event("approvedUsersUpdated"));
+      form.reset();
+    } catch (error) {
+      console.error("Erro ao salvar os dados do formulário", error);
+    }
   };
 
   return (

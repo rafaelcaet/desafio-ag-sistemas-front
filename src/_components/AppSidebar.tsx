@@ -6,13 +6,18 @@ import {
     SidebarHeader,
   } from "@/components/ui/sidebar"
 import Link from "next/link";
-import { ChartPieIcon, HomeIcon, UsersIcon } from "lucide-react";
+import { ChartPieIcon, HomeIcon, ShieldIcon, Ticket, UsersIcon } from "lucide-react";
 
 const sidebarItems = [
   {
     label: "Home",
     icon: <HomeIcon size={24}/>,
     href: "/",
+  },
+  {
+    label: "Auditoria",
+    icon: <ShieldIcon size={24}/>,
+    href: "/auditoria",
   },
   {
     label: "Usuários",
@@ -23,6 +28,14 @@ const sidebarItems = [
     label: "Dashboard",
     icon: <ChartPieIcon size={24} />,
     href: "/dashboard",
+  },
+  {
+    icon: <Ticket size={24} />,
+    label: "Indicações a pagar",
+    subItems: [
+      { label: "Indicadores a pagar", href: "/payment" },
+      { label: "Indicações Agrupadas", href: "/payment/group" },
+    ],
   },
 ];
 
@@ -44,9 +57,24 @@ export function AppSidebar() {
     <Sidebar className="border" variant="sidebar" collapsible="icon">
       <SidebarContent className="bg-slate-100">
         <SidebarGroup>
-          {sidebarItems.map((item) => (
-            <SidebarItem key={item.href} {...item}/>
-          ))}
+          {sidebarItems.map((item) =>
+            item.href ? (
+              <SidebarItem key={item.href} {...item} />
+            ) : item.subItems ? (
+              <div key={item.label}>
+                <div className="flex items-center text-[#13679F] justify-start
+                    rounded-md py-2 px-1 gap-6">
+                  <span className="w-6 h-6">{item.icon}</span>
+                  <span className="text-sm font-medium">{item.label}</span>
+                </div>
+                <div className="pl-4">
+                  {item.subItems.map((subItem) => (
+                    <SidebarItem key={subItem.href} label={subItem.label} icon={null} href={subItem.href} />
+                  ))}
+                </div>
+              </div>
+            ) : null
+          )}
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
