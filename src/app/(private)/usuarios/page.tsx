@@ -1,6 +1,7 @@
 "use client";
 
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { CheckIcon, XIcon } from "lucide-react";
 
 const leadsIndication = [
@@ -61,76 +62,87 @@ const leadsIndication = [
 ];
 
 export default function Usuarios() {
-
     return (
-      <div className="relative w-[90%] mx-auto flex flex-col gap-4">
-        <h3 className="text-2xl font-bold text-[#13679F] py-4">Usuários	</h3>
-        <div className="flex flex-col gap-2 items-center mt-8">
+      <div className="relative w-[90%] mx-auto flex flex-col gap-3">
+        <h3 className="text-2xl font-bold text-[#13679F] py-3">Usuários</h3>
+        <div className="flex flex-col items-center">
             <Table className="w-full text-[#13679F]">
                 <TableHeader className="border-gray-100 dark:border-gray-800 border-y">
                   <TableRow>
-                    <TableCell className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                    <TableCell className="py-2 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
                       Nome
                     </TableCell>
                     <TableCell
-                      className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 hidden md:table-cell"
+                      className="py-2 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 hidden md:table-cell"
                     >
                       Telefone
                     </TableCell>
                     <TableCell
-                      className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 hidden md:table-cell"
+                      className="py-2 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 hidden md:table-cell"
                     >
-                    XP
+                      XP
                     </TableCell>
                     <TableCell
-                      className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 hidden md:table-cell"
+                      className="py-2 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 hidden md:table-cell"
                     >
                       Setor
                     </TableCell>
                     <TableCell
-                      className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 hidden md:table-cell"
+                      className="py-2 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 hidden md:table-cell"
                     >
                       Tam. da empresa
                     </TableCell>
-                    <TableCell  className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                    <TableCell  className="py-2 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
                       Ações
                     </TableCell>
                   </TableRow>
                 </TableHeader>
 
-                <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
+                <TableBody className="divide-y divide-gray-100 dark:divide-gray-800 text-theme-sm">
                   {leadsIndication.map((lead: any) => (
-                    <TableRow key={lead._id}>
+                    <TableRow key={lead._id} className="hover:bg-[#13679F]/15">
 
-                      <TableCell className="py-3">
-                        <div className="flex items-center gap-3">
-                            {lead.name}
-                        </div>
+                      <TableCell className="py-2">
+                        {lead.name}
                       </TableCell>
 
                       <TableCell
-                        className="py-3 text-gray-500 text-theme-sm dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
-                            {lead.telefone}
+                        className="py-2 text-gray-500 dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
+                        {lead.telefone}
                       </TableCell>
 
                       <TableCell
-                        className="py-3 text-gray-500 text-theme-sm dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
+                        className="py-2 text-gray-500 dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
                         {lead.XP}
                       </TableCell>
 
                       <TableCell
-                        className="py-3 text-gray-500 text-theme-sm dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
+                        className="py-2 text-gray-500 dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
                         {lead.setor}
                       </TableCell>
 
                       <TableCell
-                        className="py-3 text-gray-500 text-theme-sm dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
+                        className="py-2 text-gray-500 dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
                         {lead.tamEmpresa}
                       </TableCell>
 
-                      <TableCell className="flex py-3 text-gray-500 text-theme-sm gap-8 dark:text-gray-400 whitespace-nowrap">
-                          <CheckIcon className="text-[#13679F] size-8 cursor-pointer hover:text-white hover:bg-[#13679F] rounded-full p-2 transition-all duration-300"/>
-                          <XIcon className="text-[#13679F] size-8 cursor-pointer hover:text-white hover:bg-[#13679F] rounded-full p-2 transition-all duration-300" />
+                      <TableCell className="flex py-2 text-gray-500 gap-4 dark:text-gray-400 whitespace-nowrap">
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span className="inline-flex">
+                              <CheckIcon className="text-[#13679F] size-7 cursor-pointer hover:text-white hover:bg-[#13679F] rounded-full p-1.5 transition-all duration-300" />
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent>Aprovar</TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span className="inline-flex">
+                              <XIcon className="text-[#13679F] size-7 cursor-pointer hover:text-white hover:bg-[#13679F] rounded-full p-1.5 transition-all duração-300" />
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent>Reprovar</TooltipContent>
+                        </Tooltip>
                       </TableCell>
                     </TableRow>
                   ))}

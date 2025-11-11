@@ -3,7 +3,7 @@
 
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { CheckIcon, XIcon } from "lucide-react";
+import { CheckIcon, EyeIcon, XIcon } from "lucide-react";
 
 const leadsIndication = [
     {
