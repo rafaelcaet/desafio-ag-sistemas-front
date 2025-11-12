@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/_components/AppSidebar";
+import { AuthProviderWrapper } from "@/components/providers/AuthProviderWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,14 +36,16 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased bg-slate-100`}
       >
-         <SidebarProvider>
-      <AppSidebar />
-      <main className="flex-1">
-        <SidebarTrigger className="hover:cursor-pointer text-[#13679F]
-         hover:bg-[#13679F] hover:text-slate-100 rounded-md p-2 m-2"/>
-        {children}
-      </main>
-    </SidebarProvider>
+        <AuthProviderWrapper>
+          <SidebarProvider>
+            <AppSidebar />
+            <main className="flex-1">
+              <SidebarTrigger className="hover:cursor-pointer text-[#13679F]
+               hover:bg-[#13679F] hover:text-slate-100 rounded-md p-2 m-2"/>
+              {children}
+            </main>
+          </SidebarProvider>
+        </AuthProviderWrapper>
       </body>
     </html>
   );

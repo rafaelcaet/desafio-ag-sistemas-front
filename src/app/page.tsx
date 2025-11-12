@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,8 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-const APPROVED_USERS_STORAGE_KEY = "approvedUsers";
+import { saveFormSubmission } from "@/lib/auth";
 
 const formSchema = z.object({
   nome: z.string().min(1, "obrigatório"),
@@ -25,6 +25,7 @@ const formSchema = z.object({
 });
 
 export default function Home() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,37 +37,53 @@ export default function Home() {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
     try {
-      const existingRaw = window.localStorage.getItem(
-        APPROVED_USERS_STORAGE_KEY,
-      );
-      const existing =
-        existingRaw !== null ? JSON.parse(existingRaw) : [];
-
-      const submission = {
-        ...values,
-        submittedAt: new Date().toISOString(),
-      };
-
-      window.localStorage.setItem(
-        APPROVED_USERS_STORAGE_KEY,
-        JSON.stringify([...existing, submission]),
-      );
-
-      window.dispatchEvent(new Event("approvedUsersUpdated"));
+      saveFormSubmission({
+        name: values.nome,
+        email: values.email,
+        company: values.empresa,
+        reason: values.motivo,
+      });
+      setIsSubmitted(true);
       form.reset();
     } catch (error) {
-      console.error("Erro ao salvar os dados do formulário", error);
+      console.error('Erro ao salvar formulário:', error);
     }
   };
 
+  if (isSubmitted) {
+    return (
+      <div className="flex min-h-screen items-center justify-center font-sans dark:bg-black">
+        <main className="flex h-fit rounded-lg w-full shadow-md shadow-gray-300 max-w-2xl flex-col items-center justify-center py-16 px-8 bg-white dark:bg-black">
+          <div className="w-full max-w-md space-y-8 text-center">
+            <div className="space-y-4">
+              <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h1 className="text-3xl font-semibold leading-10 tracking-tight text-[#13679F] dark:text-zinc-50">
+                Formulário enviado com sucesso!
+              </h1>
+              <p className="text-md leading-8 text-[#13679f] dark:text-zinc-400">
+                Seu formulário foi enviado e está aguardando aprovação. Você receberá um link por email assim que for aprovado.
+              </p>
+              <Button
+                onClick={() => setIsSubmitted(false)}
+                className="mt-4 bg-[#13679f] text-white hover:bg-[#13679f]/90"
+              >
+                Enviar outro formulário
+              </Button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-[#04C1F3] to-[#13679F] font-sans dark:bg-black">
-      <main className="flex h-fit rounded-lg w-full max-w-2xl flex-col items-center justify-center py-16 px-8 bg-white dark:bg-black">
+    <div className="flex min-h-screen items-center justify-center font-sans dark:bg-black">
+      <main className="flex h-fit rounded-lg w-full  shadow-md shadow-gray-300 max-w-2xl flex-col items-center justify-center py-16 px-8 bg-white dark:bg-black">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center space-y-2">
             <h1 className="text-4xl font-semibold leading-10 tracking-tight text-[#13679F] dark:text-zinc-50">

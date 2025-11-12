@@ -1,0 +1,14 @@
+"use client";
+
+import { AuthProvider } from '@/contexts/AuthContext';
+import { AdminProvider } from '@/contexts/AdminContext';
+
+export function AuthProviderWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <AuthProvider>
+      <AdminProvider>
+        {children}
+      </AdminProvider>
+    </AuthProvider>
+  );
+}

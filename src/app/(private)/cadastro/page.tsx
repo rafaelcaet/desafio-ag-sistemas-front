@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,6 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useAuth } from "@/contexts/AuthContext";
 
 const formSchema = z.object({
   telefone: z.string().min(10, "Telefone inválido").regex(/^[\d\s\(\)\-\+]+$/, "Telefone inválido"),
@@ -30,6 +33,37 @@ const formSchema = z.object({
 });
 
 export default function Cadastro() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { isAuthenticated, authenticate } = useAuth();
+  const [isValidating, setIsValidating] = useState(true);
+  const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    const token = searchParams.get('token');
+    if (token) {
+      const success = authenticate(token);
+      setIsValid(success);
+      setIsValidating(false);
+      if (!success) {
+        setTimeout(() => {
+          router.push('/');
+        }, 3000);
+      }
+    } else {
+      if (isAuthenticated) {
+        setIsValid(true);
+        setIsValidating(false);
+      } else {
+        setIsValid(false);
+        setIsValidating(false);
+        setTimeout(() => {
+          router.push('/');
+        }, 3000);
+      }
+    }
+  }, [searchParams, authenticate, isAuthenticated, router]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,8 +82,48 @@ export default function Cadastro() {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    console.log('Dados do cadastro:', values);
+    alert('Cadastro completo! Os dados foram salvos.');
+    // Aqui você pode salvar os dados completos do cadastro
+    form.reset();
   };
+
+  if (isValidating) {
+    return (
+      <div className="flex min-h-screen items-center justify-center font-sans dark:bg-black">
+        <main className="flex h-fit rounded-lg w-full max-w-2xl flex-col items-center justify-center py-16 px-8 bg-white dark:bg-black">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#13679F] mx-auto mb-4"></div>
+            <p className="text-[#13679f] dark:text-zinc-400">Validando acesso...</p>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (!isValid) {
+    return (
+      <div className="flex min-h-screen items-center justify-center font-sans dark:bg-black">
+        <main className="flex h-fit rounded-lg w-full max-w-2xl flex-col items-center justify-center py-16 px-8 bg-white dark:bg-black">
+          <div className="w-full max-w-md space-y-8 text-center">
+            <div className="space-y-4">
+              <div className="mx-auto w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <h1 className="text-3xl font-semibold leading-10 tracking-tight text-[#13679F] dark:text-zinc-50">
+                Link inválido ou expirado
+              </h1>
+              <p className="text-md leading-8 text-[#13679f] dark:text-zinc-400">
+                O link de acesso é inválido ou já foi utilizado. Você será redirecionado para o formulário.
+              </p>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center font-sans dark:bg-black">
