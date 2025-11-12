@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { CheckIcon, EyeIcon, XIcon } from "lucide-react";
 
-const leadsIndication = [
+const newUsers = [
     {
         _id: "1",
         name: "John Doe",
@@ -76,7 +76,7 @@ export default function Auditoria() {
 
     return (
       <div className="relative w-[90%] mx-auto flex flex-col gap-3">
-        <h3 className="text-2xl font-bold text-[#13679F] py-3">Auditoria</h3>
+        <h3 className="text-3xl font-bold text-[#13679F] py-3">Auditoria</h3>
         <div className="flex flex-col items-center">
             <Table className="w-full text-[#13679F]">
                 <TableHeader className="border-gray-100 dark:border-gray-800 border-y">
@@ -111,38 +111,38 @@ export default function Auditoria() {
                 </TableHeader>
 
                 <TableBody className="divide-y divide-gray-100 dark:divide-gray-800 text-theme-sm">
-                  {leadsIndication.map((lead: any) => (
-                    <TableRow key={lead._id} className="hover:bg-[#13679F]/15">
+                  {newUsers.map((user: any) => (
+                    <TableRow key={user._id} className="hover:bg-[#13679F]/15">
                       <TableCell className="py-2">
-                            {lead.name}
+                            {user.name}
                       </TableCell>
 
                       <TableCell
                         className="py-2 text-gray-500 dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
-                            {lead.email}
+                            {user.email}
                       </TableCell>
 
                       <TableCell
                         className="py-2 text-gray-500 dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
-                            {lead.company}
+                            {user.company}
                       </TableCell>
 
                       <TableCell className="py-2 text-gray-500 dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <span className="block max-w-[220px] truncate cursor-help">
-                              {lead.reason}
+                              {user.reason}
                             </span>
                           </TooltipTrigger>
                           <TooltipContent className="max-w-xs text-left whitespace-pre-wrap">
-                            {lead.reason}
+                            {user.reason}
                           </TooltipContent>
                         </Tooltip>
                       </TableCell>
 
                       <TableCell
                         className="py-2 text-gray-500 dark:text-gray-400 whitespace-nowrap hidden md:table-cell">
-                        {lead.createdAt}
+                        {user.createdAt}
                       </TableCell>
 
                       <TableCell className="flex py-2 text-gray-500 gap-4 dark:text-gray-400 whitespace-nowrap">

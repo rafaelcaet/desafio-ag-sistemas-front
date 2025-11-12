@@ -29,6 +29,12 @@ const sidebarItems = [
     href: "/usuarios",
   },
   {
+    label: "Indicações",
+    icon: <Ticket size={24} />,
+    subItems: [],
+    href: "/indicacoes",
+  },
+  {
     label: "Dashboard",
     icon: <ChartPieIcon size={24} />,
     href: "/dashboard",
